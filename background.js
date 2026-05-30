@@ -1,6 +1,8 @@
 // AI Chat Enhancer - Background Service Worker
 'use strict';
 
+// duluduluduludulu
+
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     console.log('[AI Chat Enhancer] Installed');
