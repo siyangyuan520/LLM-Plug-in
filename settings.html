@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat Enhancer 设置</title>
+  <style>
+    /* === Reset & Base === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #1d1d1f;
+      background: #f5f5f7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* === Layout === */
+    .settings-shell {
+      display: flex;
+      height: 100vh;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 24px 0;
+    }
+
+    /* === Left Nav === */
+    .nav {
+      width: 200px;
+      flex-shrink: 0;
+      padding: 6px 12px 6px 0;
+      position: sticky;
+      top: 24px;
+      align-self: flex-start;
+    }
+
+    .nav-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1d1d1f;
+      letter-spacing: -0.02em;
+      padding: 0 14px 16px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 400;
+      color: #3c3c43;
+      transition: background 0.15s ease, color 0.15s ease;
+      user-select: none;
+      margin-bottom: 2px;
+    }
+
+    .nav-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-item.active {
+      background: rgba(0, 0, 0, 0.06);
+      color: #1d1d1f;
+      font-weight: 500;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #8e8e93;
+    }
+
+    .nav-item.active .nav-icon {
+      color: #0071e3;
+    }
+
+    /* === Right Panel === */
+    .panel-area {
+      flex: 1;
+      min-width: 0;
+      padding: 0 0 0 36px;
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 12px;
+      padding: 28px 28px 32px;
+      animation: panel-in 0.22s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    @keyframes panel-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1d1d1f;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .panel-desc {
+      font-size: 12px;
+      font-weight: 400;
+      color: #86868b;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    /* === Section Block === */
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #86868b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    /* === Checkbox Row === */
+    .check-row {
+      display: flex;
+      align-items: center;
+      padding: 9px 14px;
+      border-radius: 8px;
+      transition: background 0.12s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .check-row:hover {
+      background: rgba(0, 0, 0, 0.025);
+    }
+
+    .check-row + .check-row {
+      margin-top: 1px;
+    }
+
+    .check-box {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #c7c7cc;
+      border-radius: 4px;
+      margin-right: 12px;
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .check-row.checked .check-box {
+      background: #0071e3;
+      border-color: #0071e3;
+    }
+
+    .check-box::after {
+      content: '';
+      position: absolute;
+      left: 4.5px;
+      top: 1.5px;
+      width: 5px;
+      height: 8px;
+      border: solid #ffffff;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg) scale(0);
+      transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .check-row.checked .check-box::after {
+      transform: rotate(45deg) scale(1);
+    }
+
+    .check-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: #1d1d1f;
+      line-height: 1.4;
+    }
+
+    .check-sub {
+      font-size: 11px;
+      font-weight: 400;
+      color: #aeaeb2;
+      margin-top: 1px;
+    }
+
+    /* === Toggle Switch === */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 8px;
+      transition: background 0.12s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-row:hover {
+      background: rgba(0, 0, 0, 0.025);
+    }
+
+    .toggle-text {
+      font-size: 13px;
+      font-weight: 400;
+      color: #1d1d1f;
+      line-height: 1.4;
+    }
+
+    .toggle-track {
+      width: 40px;
+      height: 24px;
+      border-radius: 12px;
+      background: #e5e5ea;
+      position: relative;
+      flex-shrink: 0;
+      transition: background 0.2s ease;
+    }
+
+    .toggle-row.on .toggle-track {
+      background: #34c759;
+    }
+
+    .toggle-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .toggle-row.on .toggle-thumb {
+      transform: translateX(16px);
+    }
+
+    /* === Placeholder Panels === */
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 240px;
+      color: #aeaeb2;
+    }
+
+    .placeholder-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 14px;
+      opacity: 0.3;
+    }
+
+    .placeholder-text {
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    /* === Dark Mode === */
+    @media (prefers-color-scheme: dark) {
+      html, body { background: #1c1c1e; color: #f5f5f7; }
+
+      .nav-item { color: #aeaeb2; }
+      .nav-item:hover { background: rgba(255, 255, 255, 0.05); }
+      .nav-item.active { background: rgba(255, 255, 255, 0.08); color: #f5f5f7; }
+      .nav-item.active .nav-icon { color: #0a84ff; }
+
+      .panel {
+        background: #2c2c2e;
+        border-color: rgba(255, 255, 255, 0.06);
+      }
+
+      .check-row:hover { background: rgba(255, 255, 255, 0.04); }
+      .check-box { border-color: #636366; }
+      .check-row.checked .check-box { background: #0a84ff; border-color: #0a84ff; }
+      .check-label { color: #f5f5f7; }
+      .check-sub { color: #636366; }
+
+      .toggle-row:hover { background: rgba(255, 255, 255, 0.04); }
+      .toggle-track { background: #39393d; }
+      .toggle-row.on .toggle-track { background: #30d158; }
+      .toggle-text { color: #f5f5f7; }
+
+      .section-line { background: rgba(255, 255, 255, 0.06); }
+    }
+  </style>
+</head>
+<body>
+  <div class="settings-shell">
+    <!-- Left Nav -->
+    <nav class="nav">
+      <div class="nav-title">设置</div>
+      <div class="nav-item active" data-panel="timeline">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </span>
+        时间轴
+      </div>
+      <div class="nav-item" data-panel="annotation">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+          </svg>
+        </span>
+        文本标注
+      </div>
+      <div class="nav-item" data-panel="folder">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+          </svg>
+        </span>
+        对话文件夹
+      </div>
+      <div class="nav-item" data-panel="prompt">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6"/><path d="M9 13h4"/>
+          </svg>
+        </span>
+        Prompt仓库
+      </div>
+    </nav>
+
+    <!-- Right Panel -->
+    <div class="panel-area">
+      <!-- Timeline Panel -->
+      <div class="panel" id="panel-timeline">
+        <div class="panel-title">时间轴</div>
+        <div class="panel-desc">管理时间轴功能在各平台的启用状态与显示方式。</div>
+
+        <!-- Section 1: Platform Permissions -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">AI 平台权限</span>
+            <span class="section-line"></span>
+          </div>
+
+          <div class="check-row checked" data-key="timeline_platform_ChatGPT">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">ChatGPT</div>
+            </div>
+          </div>
+          <div class="check-row checked" data-key="timeline_platform_Claude">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">Claude</div>
+            </div>
+          </div>
+          <div class="check-row checked" data-key="timeline_platform_Gemini">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">Gemini</div>
+            </div>
+          </div>
+          <div class="check-row checked" data-key="timeline_platform_Kimi">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">Kimi</div>
+            </div>
+          </div>
+          <div class="check-row checked" data-key="timeline_platform_Tongyi">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">通义千问</div>
+            </div>
+          </div>
+          <div class="check-row checked" data-key="timeline_platform_DeepSeek">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">DeepSeek</div>
+            </div>
+          </div>
+          <div class="check-row checked" data-key="timeline_platform_Yuanbao">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">腾讯元宝</div>
+            </div>
+          </div>
+          <div class="check-row checked" data-key="timeline_platform_Grok">
+            <div class="check-box"></div>
+            <div>
+              <div class="check-label">Grok</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Display Options -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">显示选项</span>
+            <span class="section-line"></span>
+          </div>
+
+          <div class="toggle-row" data-key="timeline_show_time">
+            <span class="toggle-text">时间轴是否显示对话时间</span>
+            <div class="toggle-track">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Annotation Panel -->
+      <div class="panel" id="panel-annotation" style="display:none;">
+        <div class="panel-title">文本标注</div>
+        <div class="panel-desc">配置文本高亮、下划线、加粗等标注功能。</div>
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">标注行为</span>
+            <span class="section-line"></span>
+          </div>
+          <div class="toggle-row on" data-key="annotation_highlight">
+            <span class="toggle-text">启用高亮标注</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="toggle-row on" data-key="annotation_underline">
+            <span class="toggle-text">启用下划线标注</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="toggle-row on" data-key="annotation_bold">
+            <span class="toggle-text">启用加粗标注</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">标注颜色</span>
+            <span class="section-line"></span>
+          </div>
+          <div class="check-row checked" data-key="annotation_color_yellow">
+            <div class="check-box"></div>
+            <div><div class="check-label" style="color:#f59e0b;">● 黄色</div></div>
+          </div>
+          <div class="check-row checked" data-key="annotation_color_green">
+            <div class="check-box"></div>
+            <div><div class="check-label" style="color:#34c759;">● 绿色</div></div>
+          </div>
+          <div class="check-row checked" data-key="annotation_color_blue">
+            <div class="check-box"></div>
+            <div><div class="check-label" style="color:#0071e3;">● 蓝色</div></div>
+          </div>
+          <div class="check-row" data-key="annotation_color_pink">
+            <div class="check-box"></div>
+            <div><div class="check-label" style="color:#ff2d55;">● 粉色</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Folder Panel -->
+      <div class="panel" id="panel-folder" style="display:none;">
+        <div class="panel-title">对话文件夹</div>
+        <div class="panel-desc">管理对话分组与文件夹显示方式。</div>
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">文件夹设置</span>
+            <span class="section-line"></span>
+          </div>
+          <div class="toggle-row on" data-key="folder_show_in_sidebar">
+            <span class="toggle-text">在侧边栏显示文件夹</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="toggle-row" data-key="folder_auto_sort">
+            <span class="toggle-text">自动按时间排序</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="toggle-row on" data-key="folder_show_count">
+            <span class="toggle-text">显示文件夹内对话数量</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt Panel -->
+      <div class="panel" id="panel-prompt" style="display:none;">
+        <div class="panel-title">Prompt 仓库</div>
+        <div class="panel-desc">管理提示词模板的存储与快捷插入。</div>
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">仓库设置</span>
+            <span class="section-line"></span>
+          </div>
+          <div class="toggle-row on" data-key="prompt_float_icon">
+            <span class="toggle-text">显示浮动快捷图标</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="toggle-row" data-key="prompt_auto_insert">
+            <span class="toggle-text">选中后自动插入输入框</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="toggle-row on" data-key="prompt_search_enabled">
+            <span class="toggle-text">启用搜索功能</span>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    'use strict';
+
+    // === localStorage helpers ===
+    function loadSetting(key, fallback) {
+      try {
+        const v = localStorage.getItem(key);
+        if (v === null) return fallback;
+        return v === 'true';
+      } catch { return fallback; }
+    }
+
+    function saveSetting(key, value) {
+      try { localStorage.setItem(key, String(value)); } catch {}
+    }
+
+    // === Init checkboxes ===
+    document.querySelectorAll('.check-row[data-key]').forEach(row => {
+      const key = row.getAttribute('data-key');
+      const checked = loadSetting(key, row.classList.contains('checked'));
+      row.classList.toggle('checked', checked);
+
+      row.addEventListener('click', () => {
+        row.classList.toggle('checked');
+        saveSetting(key, row.classList.contains('checked'));
+      });
+    });
+
+    // === Init toggles ===
+    document.querySelectorAll('.toggle-row[data-key]').forEach(row => {
+      const key = row.getAttribute('data-key');
+      const on = loadSetting(key, row.classList.contains('on'));
+      row.classList.toggle('on', on);
+
+      row.addEventListener('click', () => {
+        row.classList.toggle('on');
+        saveSetting(key, row.classList.contains('on'));
+      });
+    });
+
+    // === Panel switching ===
+    const navItems = document.querySelectorAll('.nav-item');
+    const panels = document.querySelectorAll('.panel');
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const target = item.getAttribute('data-panel');
+
+        navItems.forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+
+        panels.forEach(p => p.style.display = 'none');
+        const panel = document.getElementById('panel-' + target);
+        if (panel) {
+          panel.style.display = '';
+          // Re-trigger entrance animation
+          panel.style.animation = 'none';
+          panel.offsetHeight; // force reflow
+          panel.style.animation = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

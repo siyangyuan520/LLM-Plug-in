@@ -1,0 +1,84 @@
+{
+  "manifest_version": 3,
+  "name": "AI Chat Enhancer",
+  "version": "1.0",
+  "description": "为ChatGPT、Gemini、DeepSeek等AI对话添加时间轴、标注和引用追问功能",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://gemini.google.com/*",
+    "https://chat.deepseek.com/*",
+    "https://yuanbao.tencent.com/*",
+    "https://kimi.moonshot.cn/*",
+    "https://tongyi.aliyun.com/*",
+    "https://claude.ai/*",
+    "https://x.com/*",
+    "https://grok.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://gemini.google.com/*",
+        "https://chat.deepseek.com/*",
+        "https://yuanbao.tencent.com/*",
+        "https://kimi.moonshot.cn/*",
+        "https://tongyi.aliyun.com/*",
+        "https://claude.ai/*",
+        "https://x.com/*",
+        "https://grok.com/*"
+      ],
+      "js": [
+        "shared/utils.js",
+        "shared/platforms.js",
+        "shared/storage.js",
+        "content/timeline.js",
+        "content/annotations.js",
+        "content/followup.js",
+        "content/formula-table-copy.js",
+        "content/add-prompt-modal.js",
+        "content/prompt-repo.js",
+        "content/folder.js",
+        "content/toolbar.js",
+        "content/settings.js",
+        "content/index.js"
+      ],
+      "css": ["content/styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "AI Chat Enhancer",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "commands": {
+    "toggle-timeline": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+T",
+        "mac": "Command+Shift+T"
+      },
+      "description": "Toggle timeline visibility"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ai-chat-enhancer@example.com",
+      "strict_min_version": "109.0"
+    }
+  }
+}

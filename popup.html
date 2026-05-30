@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat Enhancer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="popup-header">
+      <div class="popup-title">
+        <span class="popup-logo">&#x2728;</span>
+        <span>AI Chat Enhancer</span>
+      </div>
+      <div class="popup-badge" id="platformBadge">Not detected</div>
+    </div>
+
+    <div class="popup-status">
+      <div class="status-item">
+        <span class="status-label">Current page</span>
+        <span class="status-value" id="pageUrl">-</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Annotations</span>
+        <span class="status-value" id="annoCount">0</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Turns</span>
+        <span class="status-value" id="nodeCount">0</span>
+      </div>
+    </div>
+
+    <div class="popup-actions">
+      <button class="popup-btn primary" id="toggleTimeline">Toggle Timeline</button>
+      <button class="popup-btn" id="clearAnnotations">Clear Annotations</button>
+    </div>
+
+    <div class="popup-help">
+      <details>
+        <summary>Help</summary>
+        <div class="help-content">
+          <p><strong>Timeline</strong> — Click the right-side strip to view conversation turns.</p>
+          <p><strong>Annotate</strong> — Select text to show the toolbar: bold, underline, highlight.</p>
+          <p><strong>Quote</strong> — Select text and click the quote icon to insert into the input.</p>
+          <p><strong>Delete</strong> — <strong>Click</strong> an existing annotation to remove it.</p>
+          <p><strong>Copy</strong> — Hover over formulas or tables to copy in multiple formats.</p>
+          <p><strong>Prompt Repo</strong> — Click the box icon near the input for saved prompts.</p>
+        </div>
+      </details>
+    </div>
+
+    <button class="popup-btn settings-btn" id="openSettings">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+      </svg>
+      设置
+    </button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
